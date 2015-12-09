@@ -1,16 +1,16 @@
 'use strict';
 
 var React = require('react');
-var Router = require('react-router');
-var Route = Router.Route;
-var DefaultRoute = Router.DefaultRoute;
-var RouteHandler = Router.RouteHandler;
+var ReactDOM = require('react-dom');
+var ReactRouter = require('react-router');
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+var IndexRoute = ReactRouter.IndexRoute;
 
 var AMR = require('amazeui-react');
 var Topbar = AMR.Topbar;
 var Nav = AMR.Nav;
 var CollapsibleNav = AMR.CollapsibleNav;
-var Container = AMR.Container;
 
 var RouteLink = require('./components/RouteLink');
 var SiteFooter = require('./components/SiteFooter');
@@ -32,7 +32,7 @@ var App = React.createClass({
           </CollapsibleNav>
         </Topbar>
         <main className="ask-main">
-          <RouteHandler />
+          {this.props.children}
         </main>
         <SiteFooter />
       </div>
@@ -46,16 +46,15 @@ var Page1 = require('./pages/Page1');
 var Page2 = require('./pages/Page2');
 
 var routes = (
-  <Route name="app" path="/" handler={App}>
-    <DefaultRoute name="index" handler={Index}/>
-    <Route name='page1' handler={Page1}/>
-    <Route name='page2' handler={Page2}/>
-  </Route>
+  <Router>
+    <Route path="/" component={App}>
+      <IndexRoute component={Index} />
+      <Route path='page1' component={Page1} />
+      <Route path='page2' component={Page2} />
+    </Route>
+  </Router>
 );
 
 document.addEventListener('DOMContentLoaded', function() {
-  Router.run(routes,
-    function(Handler) {
-      React.render(<Handler />, document.body);
-    });
+  ReactDOM.render(routes, document.getElementById('root'));
 });

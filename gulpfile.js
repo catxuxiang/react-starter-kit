@@ -157,8 +157,9 @@ gulp.task('watch', function() {
   gulp.watch('app/i/**/*', ['images']);
 });
 
+// 默认任务
 // 启动预览服务，并监视 Dist 目录变化自动刷新浏览器
-gulp.task('dev', ['default', 'watch'], function () {
+gulp.task('default', ['build', 'watch'], function () {
   browserSync({
     notify: false,
     logPrefix: 'ASK',
@@ -168,7 +169,7 @@ gulp.task('dev', ['default', 'watch'], function () {
   gulp.watch(['dist/**/*'], reload);
 });
 
-// 默认任务
-gulp.task('default', function (cb) {
+// 构建任务
+gulp.task('build', function (cb) {
   runSequence('clean', ['styles', 'jshint', 'html', 'images', 'copy', 'browserify'], cb);
 });
