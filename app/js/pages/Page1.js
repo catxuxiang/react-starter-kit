@@ -1,17 +1,17 @@
-'use strict';
+import React from 'react';
+import {
+  Container,
+} from 'amazeui-react';
 
-var React = require('react');
-var AMR = require('amazeui-react');
-
-var Page1 = React.createClass({
-  render: function() {
+const Page1 = React.createClass({
+  render() {
     return (
-      <AMR.Container className="am-padding-vertical-lg">
+      <Container className="am-padding-vertical-lg">
         <h2>页面 1</h2>
         <p>页面内容</p>
-      </AMR.Container>
+      </Container>
     );
-  }
+  },
 });
 
-module.exports = Page1;
+export default Page1;

@@ -1,19 +1,19 @@
-'use strict';
+import React from 'react';
+import {
+  Container,
+} from 'amazeui-react';
 
-var React = require('react');
-var AMR = require('amazeui-react');
-
-var Index = React.createClass({
-  render: function() {
+const Index = React.createClass({
+  render() {
     return (
       <div className="ask-banner">
-        <AMR.Container>
+        <Container>
           <h1>Hello World!</h1>
           <h2>欢迎使用 Amaze UI React 入门套件。</h2>
-        </AMR.Container>
+        </Container>
       </div>
     );
-  }
+  },
 });
 
-module.exports = Index;
+export default Index;

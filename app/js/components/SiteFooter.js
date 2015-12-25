@@ -1,21 +1,21 @@
-'use strict';
+import React from 'react';
+import {
+  Container,
+} from 'amazeui-react';
 
-var React = require('react');
-var AMR = require('amazeui-react');
-var year = new Date().getFullYear();
+const year = new Date().getFullYear();
 
-var SiteFooter = React.createClass({
-
-  render: function() {
+const SiteFooter = React.createClass({
+  render() {
     return (
       <footer className="ask-footer">
-        <AMR.Container>
+        <Container>
           <p>© {year} AllMobilize, Inc. Licensed under MIT license.
             Developed with WebStorm.</p>
-        </AMR.Container>
+        </Container>
       </footer>
     );
-  }
+  },
 });
 
-module.exports = SiteFooter;
+export default SiteFooter;

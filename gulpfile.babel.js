@@ -2,21 +2,21 @@
  *  Amaze UI Starter Kit
  */
 
-'use strict';
+import gulp from 'gulp';
+import gulpLoadPlugins from 'gulp-load-plugins';
+import del from 'del';
+import runSequence from 'run-sequence';
+import browserSync from 'browser-sync';
+import browserify from 'browserify';
+import watchify from 'watchify';
+import source from 'vinyl-source-stream';
+import buffer from 'vinyl-buffer';
 
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
-var del = require('del');
-var runSequence = require('run-sequence');
-var browserSync = require('browser-sync');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var reload = browserSync.reload;
-var isProduction = process.env.NODE_ENV === "production";
+const $ = gulpLoadPlugins();
+const reload = browserSync.reload;
+const isProduction = process.env.NODE_ENV === 'production';
 
-var AUTOPREFIXER_BROWSERS = [
+const AUTOPREFIXER_BROWSERS = [
   'ie >= 9',
   'ie_mob >= 10',
   'ff >= 30',
@@ -28,7 +28,7 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
-var paths = {
+const paths = {
   dist: {
     base: 'dist',
     js: 'dist/js',
@@ -39,16 +39,16 @@ var paths = {
 };
 
 // JavaScript 格式校验
-gulp.task('jshint', function () {
+gulp.task('eslint', function() {
   return gulp.src('app/js/**/*.js')
     .pipe(reload({stream: true, once: true}))
     .pipe($.eslint())
-    .pipe($.eslint.format())
-    .pipe($.eslint.failOnError());
+    .pipe($.eslint.format());
+    // .pipe($.eslint.failOnError());
 });
 
 // 图片优化
-gulp.task('images', function () {
+gulp.task('images', function() {
   return gulp.src('app/i/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
@@ -59,7 +59,7 @@ gulp.task('images', function () {
 });
 
 // 拷贝相关资源
-gulp.task('copy', function () {
+gulp.task('copy', function() {
   return gulp.src([
     'app/*',
     '!app/*.html',
@@ -71,19 +71,19 @@ gulp.task('copy', function () {
   ], {
     dot: true
   }).pipe(gulp.dest(function(file) {
-    var filePath = file.path.toLowerCase();
-    if (filePath.indexOf('.css') > -1) {
-      return paths.dist.css;
-    } else if (filePath.indexOf('fontawesome') > -1) {
-      return paths.dist.fonts;
-    }
-    return paths.dist.base;
-  }))
+      var filePath = file.path.toLowerCase();
+      if (filePath.indexOf('.css') > -1) {
+        return paths.dist.css;
+      } else if (filePath.indexOf('fontawesome') > -1) {
+        return paths.dist.fonts;
+      }
+      return paths.dist.base;
+    }))
     .pipe($.size({title: 'copy'}));
 });
 
 // 编译 Less，添加浏览器前缀
-gulp.task('styles', function () {
+gulp.task('styles', function() {
   return gulp.src(['app/less/app.less'])
     .pipe($.less())
     .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
@@ -111,7 +111,7 @@ if (!isProduction) {
 // b.transform('browserify-shim', {global: true});
 
 var bundle = function() {
-  var s = (
+  const s = (
     b.bundle()
       .on('error', $.util.log.bind($.util, 'Browserify Error'))
       .pipe(source('app.js'))
@@ -137,7 +137,7 @@ gulp.task('browserify', function() {
 });
 
 // 压缩 HTML
-gulp.task('html', function () {
+gulp.task('html', function() {
   return gulp.src('app/**/*.html')
     .pipe($.minifyHtml())
     .pipe($.replace(/\{\{__VERSION__\}\}/g, isProduction ? '.min' : ''))
@@ -146,8 +146,13 @@ gulp.task('html', function () {
 });
 
 // 洗刷刷
-gulp.task('clean', function(cb) {
-  del(['dist/*', '!dist/.git'], {dot: true}, cb);
+gulp.task('clean', function() {
+  return del(['dist/*', '!dist/.git'], {dot: true});
+});
+
+// 构建任务
+gulp.task('build', function(cb) {
+  runSequence('clean', ['styles', 'eslint', 'html', 'images', 'copy', 'browserify'], cb);
 });
 
 // 监视源文件变化自动cd编译
@@ -155,11 +160,12 @@ gulp.task('watch', function() {
   gulp.watch('app/**/*.html', ['html']);
   gulp.watch('app/less/**/*less', ['styles']);
   gulp.watch('app/i/**/*', ['images']);
+  gulp.watch('app/**/*.js', ['eslint']);
 });
 
 // 默认任务
 // 启动预览服务，并监视 Dist 目录变化自动刷新浏览器
-gulp.task('default', ['build', 'watch'], function () {
+gulp.task('default', ['build', 'watch'], function() {
   browserSync({
     notify: false,
     logPrefix: 'ASK',
@@ -167,9 +173,4 @@ gulp.task('default', ['build', 'watch'], function () {
   });
 
   gulp.watch(['dist/**/*'], reload);
-});
-
-// 构建任务
-gulp.task('build', function (cb) {
-  runSequence('clean', ['styles', 'jshint', 'html', 'images', 'copy', 'browserify'], cb);
 });

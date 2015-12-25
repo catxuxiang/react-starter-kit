@@ -1,29 +1,32 @@
-'use strict';
+import React from 'react';
+import {
+  render,
+} from 'react-dom';
+import {
+  Router,
+  Route,
+  IndexRoute,
+} from 'react-router';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ReactRouter = require('react-router');
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var IndexRoute = ReactRouter.IndexRoute;
+import {
+  Topbar,
+  Nav,
+  CollapsibleNav,
+} from 'amazeui-react';
 
-var AMR = require('amazeui-react');
-var Topbar = AMR.Topbar;
-var Nav = AMR.Nav;
-var CollapsibleNav = AMR.CollapsibleNav;
+import RouteLink from './components/RouteLink';
+import SiteFooter from './components/SiteFooter';
 
-var RouteLink = require('./components/RouteLink');
-var SiteFooter = require('./components/SiteFooter');
-
-var App = React.createClass({
-  render: function() {
+const App = React.createClass({
+  render() {
     return (
       <div className="ask-page">
         <Topbar
           className="ask-header"
           brand="Amaze UI"
           brandLink="/"
-          inverse>
+          inverse
+        >
           <CollapsibleNav>
             <Nav topbar>
               <RouteLink to="page1">页面 1</RouteLink>
@@ -37,24 +40,24 @@ var App = React.createClass({
         <SiteFooter />
       </div>
     );
-  }
+  },
 });
 
 // Pages
-var Index = require('./pages/Index');
-var Page1 = require('./pages/Page1');
-var Page2 = require('./pages/Page2');
+import Index from './pages/Index';
+import Page1 from './pages/Page1';
+import Page2 from './pages/Page2';
 
-var routes = (
+const routes = (
   <Router>
     <Route path="/" component={App}>
       <IndexRoute component={Index} />
-      <Route path='page1' component={Page1} />
-      <Route path='page2' component={Page2} />
+      <Route path="page1" component={Page1} />
+      <Route path="page2" component={Page2} />
     </Route>
   </Router>
 );
 
-document.addEventListener('DOMContentLoaded', function() {
-  ReactDOM.render(routes, document.getElementById('root'));
+document.addEventListener('DOMContentLoaded', () => {
+  render(routes, document.getElementById('root'));
 });
