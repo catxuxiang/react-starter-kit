@@ -6,6 +6,7 @@ import {
   Router,
   Route,
   IndexRoute,
+  browserHistory,
 } from 'react-router';
 
 import {
@@ -48,7 +49,7 @@ const App = React.createClass({
       left: [
         {
           link: '#',
-          onSelect: function() { location.href = ''; },
+          onSelect: function() { },
           icon: 'home',
         },
       ],

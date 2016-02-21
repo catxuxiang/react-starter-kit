@@ -14,7 +14,7 @@ import buffer from 'vinyl-buffer';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
-const isProduction = true;
+const isProduction = false;
 
 const AUTOPREFIXER_BROWSERS = [
   'ie >= 9',

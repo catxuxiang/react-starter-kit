@@ -53,7 +53,7 @@ const Home = React.createClass({
         <ListItem
           linkComponent={Link}
           linkProps={{
-            to: `/photo`
+            to: `/photos`
           }}
         >
           <div
@@ -66,17 +66,21 @@ const Home = React.createClass({
             className="adm-msg-icon"
           />
         </ListItem>
-      </List>
-    );
-  },
-  renderLists() {
-    return (
-      <List>
-        <ListItem href="./#/photos">
-          郎郎的照片
-        </ListItem>
-        <ListItem href="./#/todo">
-          郎郎大事记
+        <ListItem
+          linkComponent={Link}
+          linkProps={{
+            to: `/todo`
+          }}
+        >
+          <div
+            className="adm-msg-list-main am-text-truncate"
+          >
+            郎郎大事记
+          </div>
+          <Icon
+            icon="chevron-right"
+            className="adm-msg-icon"
+          />
         </ListItem>
       </List>
     );
@@ -85,7 +89,7 @@ const Home = React.createClass({
     return (
       <PageContainer>
         {this.renderSlider()}
-        {this.renderLists()}
+        {this.renderList()}
       </PageContainer>
     );
   }
